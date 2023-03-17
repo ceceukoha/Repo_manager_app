@@ -7,13 +7,7 @@
         <p>Manage your Repository on the go! This section contains all of your project's files and each file's revision
             history!</p>
 
-        <div class="pagination">
-            <button @click="prevHandle()">Prev</button>
-            <div v-for="num in pages">
-                <button @click="skipHandle(num)" :class="page === num ? 'currPage' : ''">{{ num }}</button>
-            </div>
-            <button @click="nextHandle()">Next</button>
-        </div>
+
 
         <div>
             <h1>Search</h1>
@@ -34,20 +28,21 @@
         </div>
         <div v-else class="ret-items">
             <div v-for="repo in repos " :key="repo.id">
-                <div class="card d-flex justify-content-center mx-auto pt-5 mt-5" style="width: 28rem;">
-                    <img src="..." class="card-img-top" alt="...">
+                <div class="card d-flex justify-content-center mx-auto pt-5 mt-5 bg-dark" style="width: 28rem;">
                     <div class="card-body">
-                        <h1 class="card-title">Repo Name</h1>
+                        <h1 class="card-title">Repo Name:</h1>
                         <p class="card-text">{{ repo.name }}</p>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Visibility: {{ repo.visibility }}</li>
-                            <li class="list-group-item">Copy Url: {{ repo.clone_url }}</li>
-                            <li class="list-group-item">A third item</li>
+                            <li class="list-group-item mt-5"><span>Visibility: </span>{{ repo.visibility }}</li>
+                            <li class="list-group-item mt-2">Copy Url: {{ repo.clone_url }}</li>
+                            <li class="list-group-item mt-2">Date Created: {{ repo.created_at }}</li>
+                            <li class="list-group-item mt-2">Last Commit: {{ repo.updated_at }}</li>
+                            <router-link> View More >></router-link>
                         </ul>
-                        <RouterLink to="/{{repo.}}" href="#" class="btn btn-primary">Visit Repo</RouterLink>
+                        <RouterLink to="/{{repo.}}" href="#" class="btn btn-primary mt-4">Visit Repo</RouterLink>
                     </div>
-                </div>
-                <p>Name of Repository</p>
+            </div>
+            <!-- <p>Name of Repository</p>
 
                 <h2>
 
@@ -55,8 +50,8 @@
                 </h2>
                 <p>Link to Repository</p>
                 <h3>
-                    {{ repo.url }}
-                </h3>
+                        {{ repo.url }}
+                    </h3> -->
             </div>
         </div>
 
@@ -98,6 +93,11 @@
     color: white;
     border-radius: 5px;
 }
+
+.card-body h1,
+p {
+    color: white;
+}
 </style>
 
 
@@ -110,10 +110,10 @@ export default {
         }
     },
     computed: {
-    pages: function () {
-      return [this.page, this.page + 1, this.page + 2, this.page + 3]
-    }
-  },
+        pages: function () {
+            return [this.page, this.page + 1, this.page + 2, this.page + 3]
+        }
+    },
     mounted() {
         this.fetchRepo();
     },

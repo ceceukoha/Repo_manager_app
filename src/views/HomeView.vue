@@ -33,8 +33,9 @@
     font-size: 1.5rem;
     text-align: center;
     font-family: "Righteous", sans-serif;
+    color: black;
     font-size: 70px;
-    overflow: hidden;
+    
 }
 .home-page-btn{
     margin-top: 90px;
