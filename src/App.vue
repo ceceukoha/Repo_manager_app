@@ -17,7 +17,7 @@ import Sidebar from './components/Sidebar.vue';
     <RouterView/>
   </main>
   <footer>
-    <p>Copyright 2023.</p> 
+    <p>Designed By Cece Ukoha</p> 
   </footer>
 </template>
 
@@ -35,7 +35,8 @@ nav{
   align-items: center;
   margin: auto;
   padding: 1.3rem;
-  justify-content: space-around;
+  justify-content: space-evenly;
+  background: black;
 }
 nav a{
   text-decoration: none;

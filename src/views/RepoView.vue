@@ -7,14 +7,12 @@
         <p>Manage your Repository on the go! This section contains all of your project's files and each file's revision
             history!</p>
 
-
-
         <div>
-            <h1>Search</h1>
-            <form class="d-flex mx-auto" role="search">
+        <h1>Search</h1>
+        <!-- <form class="d-flex mx-auto" role="search">
                 <input class="form-control me-1 w-25 m-auto" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form> -->
         </div>
 
 
@@ -26,32 +24,32 @@
                 </div>
             </div>
         </div>
-        <div v-else class="ret-items">
-            <div v-for="repo in repos " :key="repo.id">
-                <div class="card d-flex justify-content-center mx-auto pt-5 mt-5 bg-dark" style="width: 28rem;">
-                    <div class="card-body">
-                        <h1 class="card-title">Repo Name:</h1>
-                        <p class="card-text">{{ repo.name }}</p>
+        <div v-else class="ret-items ">
+            <div v-for="repo in paginatedArray" :key="repo.id">
+                <div class="card card2 d-flex justify-content-center mx-auto pt-5 mt-5 bg-dark" style="width: 30rem;">
+                    <div class="card-body cardbody2">
+                        <h1 class="card-title text-white">Repo Name:</h1>
+                        <p class="card-text text-light">{{ repo.name }}</p>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item mt-5"><span>Visibility: </span>{{ repo.visibility }}</li>
                             <li class="list-group-item mt-2">Copy Url: {{ repo.clone_url }}</li>
                             <li class="list-group-item mt-2">Date Created: {{ repo.created_at }}</li>
                             <li class="list-group-item mt-2">Last Commit: {{ repo.updated_at }}</li>
-                            <router-link> View More >></router-link>
+
                         </ul>
                         <RouterLink to="/{{repo.}}" href="#" class="btn btn-primary mt-4">Visit Repo</RouterLink>
                     </div>
+                </div>
+
             </div>
-            <!-- <p>Name of Repository</p>
 
-                <h2>
+            <div aria-label="Page navigation example"  class="mx-auto">
+                <ul class="pagination mt-4">
+                    <li class="page-item"><button @click="prevPage" :disabled="currPage == 1">Previous</button></li>
+                    <h1 class="text-dark">{{ currPage }} of {{ pages }}</h1>
 
-                    {{ repo.name }}
-                </h2>
-                <p>Link to Repository</p>
-                <h3>
-                        {{ repo.url }}
-                    </h3> -->
+                    <li class="page-item"><button @click="nextPage" :disabled="currPage == pages">Next</button></li>
+                </ul>
             </div>
         </div>
 
@@ -61,8 +59,9 @@
 
 <style>
 .repo-page {
-    padding: 30px;
-    background-color: #fff;
+    width: 100%;
+
+
 }
 
 .repo-page h1 {
@@ -74,6 +73,13 @@
     margin-top: 30px;
     font-size: 20px;
     text-align: center;
+}
+
+.ret-items {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
 }
 
 .ret-items h2 {
@@ -94,28 +100,48 @@
     border-radius: 5px;
 }
 
-.card-body h1,
+.card2{
+    width: 100%;
+}
+.cardbody2 h1,
 p {
-    color: white;
+
 }
 </style>
 
 
 <script>
+
 export default {
+
     data() {
         return {
             repos: [],
-            isLoading: true
+            isLoading: true,
+            pageSize: 5,
+            currPage: 1
+
         }
+
     },
     computed: {
         pages: function () {
-            return [this.page, this.page + 1, this.page + 2, this.page + 3]
+            return Math.ceil(this.repos.length / this.pageSize)
+
+        },
+
+        paginatedArray() {
+            const start = (this.currPage - 1) * this.pageSize;
+            const end = start + this.pageSize;
+            return this.repos.slice(start, end)
+
         }
     },
     mounted() {
         this.fetchRepo();
+    },
+    updated() {
+        console.log(this.paginatedArray);
     },
     methods: {
         fetchRepo() {
@@ -126,27 +152,16 @@ export default {
                 .then((data) => {
                     this.repos = data
                     this.isLoading = false
-                    // console.log(data)
+                    console.log(data)
                 })
-
-
-        }
-        , nextHandle() {
-            this.page = this.page + 1
-            this.selectUser()
         },
-
-        skipHandle(num) {
-            this.page = num
-            this.selectUser()
+        prevPage(){
+            this.currPage -- //decrement reduces value by 1
         },
-
-        prevHandle() {
-            if (this.page > 1) {
-                this.page = this.page - 1
-                this.selectUser()
-            }
+        nextPage(){
+            this.currPage ++
         }
+
     }
 
 }
